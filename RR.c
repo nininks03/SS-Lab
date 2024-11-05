@@ -10,11 +10,6 @@ printf("Enter the number of process : ");
 scanf("%d",&n);
 struct process p[n];
 
-/*struct process p[n],temp;
-p[0].pno=1; p[0].at=2; p[0].bt=2;
-p[1].pno=2; p[1].at=5; p[1].bt=6;
-p[2].pno=3; p[2].at=0; p[2].bt=4;
-p[3].pno=4; p[3].at=4; p[3].bt=7;*/
 printf("Enter the Process no., Arrival time and Burst time of :-\n");
 for(i=0;i<n;i++) {
 printf("Process : \n");
@@ -29,12 +24,12 @@ scanf("%d",&tq);
 int time=0,flag=0;
 while (1)
 {  
-    printf("KKKKKKKKKKKK");
+    printf("while loop\n");
     flag=1;
     for ( i = 0; i < n; i++)
     {
         //flag=0;
-            printf("if loop");
+            printf("if loop : ");
         printf("i: %d\n",i);
         printf("rbt : %d\n",p[i].rbt);
         if(p[i].rbt>0 && p[i].at<=time) {
