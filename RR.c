@@ -1,109 +1,69 @@
 #include<stdio.h>
 struct process {
-int pno,bt,at,cbt,tat,wt;
+int pno,bt,rbt,tat,wt,at;
 };
 void main()
 {
-int n,i,j,tq;
-float ttat,twt,atwt,atat;
+int n,i,tq,j;
+float ttat=0,twt=0;
 printf("Enter the number of process : ");
 scanf("%d",&n);
-struct process p[n],temp;
-printf("Enter the Process no. Arrival time and Burst time of :-\n");
-for(i=0;i<n;i++){
-printf("Process %d : ",i);
+struct process p[n];
+
+/*struct process p[n],temp;
+p[0].pno=1; p[0].at=2; p[0].bt=2;
+p[1].pno=2; p[1].at=5; p[1].bt=6;
+p[2].pno=3; p[2].at=0; p[2].bt=4;
+p[3].pno=4; p[3].at=4; p[3].bt=7;*/
+printf("Enter the Process no., Arrival time and Burst time of :-\n");
+for(i=0;i<n;i++) {
+printf("Process : \n");
 scanf("%d %d %d",&p[i].pno,&p[i].at,&p[i].bt);
-p[i].cbt=p[i].bt;
+p[i].rbt=p[i].bt;
+p[i].tat=0;
+p[i].wt=0;
+//tbt+=p[i].bt;
 }
 printf("Enter the time quantum : ");
 scanf("%d",&tq);
-for(i=0;i<n-1;i++){
-for(j=i+1;j<n;j++){
-if(p[i].at>p[j].at){
-temp=p[i];
-p[i]=p[j];
-p[j]=temp;
-}
-}
-}
-/*printf("Sorted array is : \n");
-for(i=0;i<n;i++) {
-printf("%d %d %d\n",p[i].pno,p[i].at,p[i].bt);
-}*/
-printf("\nGANTT CHART\n0");
-int time=0,y=0,t,queue[20];
-i=0,j=0;
-while(1) {
-	if(p[i].at<=time) {
-		if(p[i].bt>0) {
-			if(p[i].bt>tq) {
-				//queue[j]=i;
-				queue[j]=p[i].pno;
-				printf("%d   P%d\n",j,p[i].pno);
-				j++;
-				time=time+tq;
-				p[i].bt-=tq;
-				//printf("  P%d  %d",p[i].pno,x);
-				//t+=tq;
-				for (t=j; t<time; t++)
-				{
-					if (p[(i+1)%n].at<=time) {
-						//queue[j]=(i+1)%n;
-						queue[j]=p[(i+1)%n].pno;
-						printf("%d   P%d\n",j,p[(i+1)%n].pno);
-						j++;
-                	}
-					else {
-						//queue[j]=i;
-						queue[j]=p[i].pno;
-						printf("%d   P%d\n",j,p[i].pno);
-						j++;
-					}
-				}
-			}
-			else {
-				time=time+p[i].bt;
-				p[i].tat=time;
-				p[i].wt=p[i].tat-p[i].cbt;
-				p[i].bt=0;
-				y++;
-				//printf("  P%d  %d",p[i].pno,x);
-				//t+=tq;
-				if(y==n){
-					break;
-					}
-			}
-		}
-		if(i==n-1) {
-			i=0; 
+int time=0,flag=0;
+while (1)
+{  
+    printf("KKKKKKKKKKKK");
+    flag=1;
+    for ( i = 0; i < n; i++)
+    {
+        //flag=0;
+            printf("if loop");
+        printf("i: %d\n",i);
+        printf("rbt : %d\n",p[i].rbt);
+        if(p[i].rbt>0 && p[i].at<=time) {
+            flag=0;
+            if(p[i].rbt>tq) {
+                time+=tq;
+                p[i].rbt-=tq;
+                printf("%d\n",time);
+            }
+            else {
+                    printf("else loop");
+                time+=p[i].rbt;
+                p[i].rbt=0;
+                //p[i].tat=time-p[i].at;
+                p[i].wt=time-p[i].bt-p[i].at;
+                p[i].tat=p[i].wt+p[i].bt;
+                printf("%d %d\n",p[i].wt,p[i].tat);
+            }
         }
-		else {
-			i++; 
-        }
-	
     }
-	else {
-	time=p[i].at;
-    printf("  IDEAL  %d",t);
-	}
+    if(flag==1)
+    break;
 }
-
-printf("Sorted Process is : \n");
-for(i=0;i<j;i++) {
-printf("P%d ",queue[i]);
-}
-
-}
-/*
-printf("\n\nProcess no.\tArrival time\tBurst time\tTurnaround time\tWaiting time\n");
+printf("\n\nProcess no.\tBurst time\tArrival time\tTurnaround time\tWaiting time\n");
 for(i=0;i<n;i++) {
-printf("P%d\t\t%d\t\t%d\t\t%d\t\t%d\n",p[i].pno,p[i].at,p[i].cbt,p[i].tat,p[i].wt);
+printf("P%d\t\t%d\t\t%d\t\t%d\t\t%d\n",p[i].pno,p[i].bt,p[i].at,p[i].tat,p[i].wt);
+ttat+=p[i].tat;
+twt+=p[i].wt;
 }
-ttat=p[n-1].tat;
-twt=p[n-1].wt;
-atat=ttat/n;
-atwt=twt/n;
-printf("Average Turnaround time = %f\n",atat);
-printf("Average Waiting time = %f\n",atwt);
+printf("Average Turnaround time = %f\n",ttat/n);
+printf("Average Waiting time = %f\n",twt/n);
 }
-*/   
