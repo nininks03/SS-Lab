@@ -1,64 +1,71 @@
-#include<stdio.h>
-struct process {
-int pno,bt,rbt,tat,wt,at;
+#include <stdio.h>
+
+struct Process {
+int id;
+int burst_time;
+int arrival_time;
+int remaining_time;
+int completion_time;
+int waiting_time;
+int turnaround_time;
 };
+
 void main()
 {
-int n,i,tq,j;
-float ttat=0,twt=0;
-printf("Enter the number of process : ");
-scanf("%d",&n);
-struct process p[n];
+int n, quantum;
+struct Process p[10];
 
-printf("Enter the Process no., Arrival time and Burst time of :-\n");
-for(i=0;i<n;i++) {
-printf("Process : \n");
-scanf("%d %d %d",&p[i].pno,&p[i].at,&p[i].bt);
-p[i].rbt=p[i].bt;
-p[i].tat=0;
-p[i].wt=0;
-//tbt+=p[i].bt;
+printf("Enter the number of processes: ");
+scanf("%d", &n);
+
+for (int i = 0; i < n; i++) {
+p[i].id = i + 1;
+printf("Enter Burst Time and Arrival Time for Process %d: ", i + 1);
+scanf("%d %d", &p[i].burst_time, &p[i].arrival_time);
+p[i].remaining_time = p[i].burst_time;
 }
-printf("Enter the time quantum : ");
-scanf("%d",&tq);
-int time=0,flag=0;
-while (1)
-{  
-    printf("while loop\n");
-    flag=1;
-    for ( i = 0; i < n; i++)
-    {
-        //flag=0;
-            printf("if loop : ");
-        printf("i: %d\n",i);
-        printf("rbt : %d\n",p[i].rbt);
-        if(p[i].rbt>0 && p[i].at<=time) {
-            flag=0;
-            if(p[i].rbt>tq) {
-                time+=tq;
-                p[i].rbt-=tq;
-                printf("%d\n",time);
-            }
-            else {
-                    printf("else loop");
-                time+=p[i].rbt;
-                p[i].rbt=0;
-                //p[i].tat=time-p[i].at;
-                p[i].wt=time-p[i].bt-p[i].at;
-                p[i].tat=p[i].wt+p[i].bt;
-                printf("%d %d\n",p[i].wt,p[i].tat);
-            }
-        }
-    }
-    if(flag==1)
-    break;
+
+printf("Enter Time Quantum: ");
+scanf("%d", &quantum);
+int time = 0;
+int completed = 0;
+
+int i;
+
+while (completed < n) {
+int flag = 0;
+for (i = 0; i < n; i++) {
+if (p[i].remaining_time > 0 && p[i].arrival_time <= time) {
+flag = 1;
+if (p[i].remaining_time > quantum) {
+time += quantum;
+p[i].remaining_time -= quantum;
+} else {
+time += p[i].remaining_time;
+p[i].completion_time = time;
+p[i].remaining_time = 0;
+p[i].turnaround_time = p[i].completion_time - p[i].arrival_time;
+p[i].waiting_time = p[i].turnaround_time - p[i].burst_time;
+completed++;
+
 }
-printf("\n\nProcess no.\tBurst time\tArrival time\tTurnaround time\tWaiting time\n");
-for(i=0;i<n;i++) {
-printf("P%d\t\t%d\t\t%d\t\t%d\t\t%d\n",p[i].pno,p[i].bt,p[i].at,p[i].tat,p[i].wt);
-ttat+=p[i].tat;
-twt+=p[i].wt;
 }
-printf("Average Turnaround time = %f\n",ttat/n);
-printf("Average Waiting time = %f\n",twt/n);
+}
+if (!flag) {
+time++;
+}
+}
+printf("Process\tBurst Time\tArrival Time\tWaiting Time\tTurnaround Time\n");
+printf("Process ID\tBurst Time\tArrival Time\tCompletion Time\tTurnaround Time\tWaiting
+Time\n");
+for (int i = 0; i < n; i++) {
+printf("%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+p[i].id,
+
+p[i].burst_time,
+p[i].arrival_time,
+p[i].completion_time,
+p[i].turnaround_time,
+p[i].waiting_time);
+}
 }
